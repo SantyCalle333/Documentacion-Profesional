@@ -1,180 +1,140 @@
-# 📘 SOC Analyst Lab Report – Conversor (Hack The Box)
+# 🛡️ SOC Analyst Lab Report – Conversor (Hack The Box)
 
-1. Información general
+## 📌 Información general
 
-Plataforma: Hack The Box
+| Campo | Detalle |
+|------|--------|
+| Plataforma | Hack The Box |
+| Laboratorio | Conversor |
+| Sistema Operativo | Linux |
+| Dificultad | Easy |
+| Enfoque | Blue Team / Defensive Analysis |
+| Rol | SOC Analyst Tier 1 |
 
-Nombre del lab: Conversor
+---
 
-Sistema operativo: Linux
+## 🎯 Objetivo del laboratorio
 
-Dificultad: Easy
+Analizar un entorno Linux vulnerable desde una **perspectiva defensiva**, con el fin de identificar actividad anómala, evaluar el impacto de un posible compromiso y proponer acciones de detección y respuesta alineadas a un **SOC Analyst Junior**.
 
-Tipo de análisis: Defensive / Blue Team perspective
+---
 
-Rol asumido: SOC Analyst Tier 1
+## 🧩 Contexto del incidente
 
+Durante el monitoreo del sistema se identificó:
 
-2. Objetivo del laboratorio
+- Un **servicio web expuesto públicamente**
+- Procesamiento de entradas controladas por el usuario
+- Comportamientos compatibles con **abuso de aplicación web**
 
-Analizar un entorno Linux vulnerable desde la perspectiva de un Centro de Operaciones de Seguridad (SOC) con el fin de:
+**Sistema afectado:**  
+Servidor Linux con servicio web accesible desde Internet.
 
-Identificar vectores de ataque comunes en aplicaciones web
+**Vector de ataque sospechado:**  
+Web Application Abuse / Command Injection.
 
-Analizar evidencias de abuso de servicios
+---
 
-Reconocer indicadores de compromiso (IOC)
+## 🔍 Evidencias recolectadas
 
-Evaluar controles de detección y respuesta
+### Indicadores observados
+- Accesos repetitivos a endpoints web
+- Manipulación anómala de parámetros HTTP
+- Respuestas del servidor inconsistentes con uso legítimo
+- Ejecución de procesos no habituales desde el servicio web
 
+### Logs analizados
+- **Web server logs**
+  - Requests con patrones anómalos
+- **System logs**
+  - Procesos ejecutados por el usuario del servicio web
 
-3. Contexto del incidente
+> No se incluyen payloads, comandos ni flags para cumplir con los términos de uso de Hack The Box.
 
-Durante el monitoreo del sistema se observa:
+---
 
-Un servicio web accesible públicamente
+## 🧠 Análisis técnico
 
-Procesamiento de entradas del usuario
+### Evaluación del comportamiento
+- La actividad observada **no corresponde a uso normal**
+- Se detectan patrones automatizados
+- Existe impacto potencial sobre:
+  - Confidencialidad
+  - Integridad del sistema
 
-Comportamiento anómalo asociado a ejecución de comandos
+### Clasificación del evento
 
-Sistema afectado:
+| Criterio | Resultado |
+|--------|-----------|
+| Tipo de evento | Incidente de seguridad |
+| Categoría | Compromiso de aplicación web |
+| Severidad | Media |
 
-Servidor Linux expuesto a Internet
+---
 
-Servicio web vulnerable a abuso de input
+## 🧭 Mapeo MITRE ATT&CK
 
-Vector de ataque sospechado:
+Técnicas identificadas:
 
-Web Application Abuse / Command Injection
+- **T1190 – Exploit Public-Facing Application**
+- **T1059 – Command and Scripting Interpreter**
 
+**Justificación:**  
+La aplicación web permite la ejecución de comandos mediante manipulación de entradas, afectando el sistema subyacente.
 
-4. Evidencias recolectadas
-   
-4.1 Indicadores observados
+---
 
-Accesos repetitivos a endpoints web
+## 🚨 Respuesta y acciones recomendadas
 
-Parámetros manipulados en peticiones HTTP
+### Acciones inmediatas
+- Aislar el servidor afectado
+- Revisar integridad del sistema
+- Analizar accesos recientes
+- Evaluar rotación de credenciales
 
-Respuestas del servidor indicando ejecución no esperada
+### Medidas preventivas
+- Validación estricta de entradas
+- Principio de mínimo privilegio
+- Implementación de WAF
+- Alertas por ejecución anómala de procesos
 
-Procesos hijos iniciados desde el servicio web
+---
 
+## ⚙️ Automatización y mejora propuesta
 
-4.2 Logs analizados
+- Detección automática de:
+  - Caracteres sospechosos en parámetros HTTP
+  - Procesos iniciados por servicios web
+- Alertas por:
+  - Uso del intérprete de comandos
+  - Creación de shells no esperadas
 
-Web server logs
+---
 
-Requests anómalos
+## 📚 Lecciones aprendidas
 
-Parámetros con caracteres especiales
+- Las aplicaciones web expuestas son un vector crítico
+- La correlación entre logs web y de sistema es clave
+- La detección temprana reduce impacto
+- La automatización es fundamental en SOC Tier 1
 
-System logs
+---
 
-Ejecución de procesos no habituales
+## ✅ Conclusión
 
-Comandos lanzados por el usuario del servicio web
+Este laboratorio permitió reforzar habilidades esenciales de un **SOC Analyst Junior**, incluyendo:
 
-No se documentan payloads ni comandos específicos para cumplir con ToS.
+- Análisis de actividad anómala
+- Clasificación de incidentes
+- Uso del marco MITRE ATT&CK
+- Propuesta de controles defensivos
 
+---
 
-5. Análisis técnico
+## ⚠️ Disclaimer
 
-5.1 Evaluación del comportamiento
-
-El patrón de peticiones no corresponde a uso legítimo
-
-Se identifican intentos sistemáticos de manipulación
-
-Existe impacto potencial en:
-
-Confidencialidad
-
-Integridad del sistema
-
-
-5.2 Clasificación del evento
-
-Tipo: Incidente de seguridad
-
-Categoría: Compromiso de aplicación web
-
-Severidad estimada: Medium
-
-
-6. Mapeo MITRE ATT&CK
-
-Técnicas asociadas:
-
-T1190 – Exploit Public-Facing Application
-
-T1059 – Command and Scripting Interpreter
-
-Justificación: El servicio web permite ejecución de comandos mediante manipulación de entradas, comprometiendo el sistema subyacente.
-
-
-7. Respuesta y acciones recomendadas
-
-7.1 Acciones inmediatas
-
-Aislar el servidor afectado
-
-Revisar integridad del sistema
-
-Rotar credenciales potencialmente expuestas
-
-Revisar accesos recientes
-
-
-7.2 Medidas preventivas
-
-Validación estricta de entradas
-
-Principio de mínimo privilegio
-
-WAF para detección de patrones maliciosos
-
-Alertas sobre ejecución anómala de procesos
-
-
-8. Automatización / mejora propuesta
-
-Script para detectar:
-
-Caracteres sospechosos en parámetros HTTP
-
-Ejecución de procesos desde servicios web
-
-Alertas automáticas por:
-
-Creación de shells
-
-Uso anómalo del intérprete de comandos
-
-
-9. Lecciones aprendidas
-
-Las aplicaciones web mal protegidas son un vector crítico
-
-Logs de aplicaciones y sistema deben correlacionarse
-
-La detección temprana reduce impacto
-
-La automatización es clave para SOC Tier 1
-
-
-10. Conclusión
-
-Este laboratorio permitió aplicar conceptos fundamentales de un SOC Analyst Junior, reforzando habilidades en:
-
-Análisis de actividad sospechosa
-
-Evaluación de incidentes web
-
-Uso de MITRE ATT&CK
-
-Propuesta de controles defensivos
+Este repositorio contiene **documentación defensiva y educativa**.  
+No se incluyen walkthroughs, flags ni detalles de explotación que violen los términos de Hack The Box.
 
 
 11. Disclaimer
