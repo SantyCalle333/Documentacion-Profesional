@@ -1,6 +1,6 @@
 # 🛡️ SOC Analyst – Defensive Labs Portfolio
 
-Este repositorio contiene documentación técnica de laboratorios prácticos realizados desde una **perspectiva defensiva (Blue Team)**.
+Este repositorio contiene documentación técnica de laboratorios prácticos realizados desde una **perspectiva defensiva (Blue and Red Team)**.
 
 ## Objetivo
 Demostrar habilidades prácticas en:
